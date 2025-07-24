@@ -31,4 +31,14 @@ public class MessageRequestDto {
     @Schema(description = "메시지 타입 (PUSH, KAKAO, SMS, EMAIL)", example = "PUSH")
     @NotNull(message = "메시지 타입은 필수입니다.")
     private MessageType messageType; // 메시지 타입 (PUSH, KAKAO, SMS, EMAIL)
+
+    @Override
+    public String toString() {
+        return "MessageRequestDto{" +
+                "memberId='" + memberId + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", content='" + content + '\'' +
+                ", messageType=" + messageType +
+                '}';
+    }
 }

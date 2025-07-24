@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository
 public interface MessageRespository extends JpaRepository<MessageHistory, Long> {
 
-    List<MessageHistory> findByMemberIdOrderBySentAtDesc(String memberId);
 
-    List<MessageHistory> findByPhoneNumberOrderBySentAtDesc(String phoneNumber);
+    List<MessageHistory> findByMemberIdAndVisibleTrueOrderBySentAtDesc(String memberId);
+
+    List<MessageHistory> findByPhoneNumberAndVisibleTrueOrderBySentAtDesc(String phoneNumber);
 }

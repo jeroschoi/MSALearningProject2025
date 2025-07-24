@@ -32,9 +32,11 @@ public class MessageHistory {
     private String content;
 
     @Comment("메시지 전송 시간")
-    private LocalDateTime sentAt;
+    @Builder.Default // 기본값으로 현재 시간을 설정
+    private LocalDateTime sentAt = LocalDateTime.now();
 
     @Comment("메시지 노출 여부")
+    @Builder.Default // 기본값으로 true 설정
     private boolean visible = true;
 
     @Override
