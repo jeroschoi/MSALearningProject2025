@@ -6,6 +6,7 @@ import com.event.msalearningproject.message.entity.MessageHistory;
 import com.event.msalearningproject.message.service.MessageSendService;
 import com.event.msalearningproject.message.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class MessageController {
 
     @PostMapping("/send/single")
     @Operation(summary = "Send Single Message", description = "단건 메시지 전송")
-    public ResponseEntity<GlobalReponseDto> sendSingleMessage(@RequestBody MessageRequestDto requestDto) {
+    public ResponseEntity<GlobalReponseDto> sendSingleMessage(@RequestBody @Valid MessageRequestDto requestDto ) {
         GlobalReponseDto responseDto = new GlobalReponseDto();
 
         boolean isSent = messageSendService.sendMessage(requestDto);
@@ -51,7 +52,7 @@ public class MessageController {
 
     @PostMapping("/send/multi")
     @Operation(summary = "Send Multiple Messages", description = "다건 메시지 전송")
-    public ResponseEntity<GlobalReponseDto> sendMultipleMessages(@RequestBody List<MessageRequestDto> requestDtoList) {
+    public ResponseEntity<GlobalReponseDto> sendMultipleMessages(@RequestBody @Valid List<MessageRequestDto> requestDtoList) {
         GlobalReponseDto responseDto = new GlobalReponseDto();
         int sentCount = 0;
         List<MessageRequestDto> failedList = new ArrayList<>();
@@ -85,7 +86,7 @@ public class MessageController {
 
     @PostMapping
     @Operation(summary = "Create Message History", description = "메시지 이력 생성")
-    public ResponseEntity<GlobalReponseDto> createMessageHistory(@RequestBody MessageRequestDto dto) {
+    public ResponseEntity<GlobalReponseDto> createMessageHistory(@RequestBody @Valid MessageRequestDto dto) {
         MessageHistory messageHistory = service.saveMessageHistory(dto);
         GlobalReponseDto responseDto = new GlobalReponseDto();
         responseDto.setData(messageHistory);

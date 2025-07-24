@@ -1,8 +1,6 @@
 package com.event.msalearningproject.message.mapper;
 
 
-import com.event.msalearningproject.example.dto.SampleDto;
-import com.event.msalearningproject.example.entity.SampleEntity;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
 import com.event.msalearningproject.message.entity.MessageHistory;
 import org.mapstruct.Mapper;
