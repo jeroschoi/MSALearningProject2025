@@ -43,7 +43,9 @@ public class MessageService {
      */
     @Transactional(readOnly = true) // ReadOnly 트랜잭션을 사용하여 성능 최적화
     public List<MessageHistory> getMessagePhoneNumber(String phoneNumber) {
-        List<MessageHistory> result = repository.findByPhoneNumberAndVisibleTrueOrderBySentAtDesc(phoneNumber);
+        // 010-1234-5678 형식으로 포맷팅
+        String formattedNumber = formatPhoneNumber(phoneNumber);
+        List<MessageHistory> result = repository.findByPhoneNumberAndVisibleTrueOrderBySentAtDesc(formattedNumber);
         if (result.isEmpty()) {
             log.error("메시지 이력 조회 실패 -휴대폰 번호: {}", phoneNumber);
             throw new EntityNotFoundException("No message history found for phone number: " + phoneNumber);
@@ -89,5 +91,11 @@ public class MessageService {
         return result.size();
     }
 
+    /**
+     * 휴대폰 번호 포맷팅
+     */
+    private String formatPhoneNumber(String rawNumber) {
+        return rawNumber.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+    }
 
 }
