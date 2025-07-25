@@ -24,14 +24,15 @@ public class MemberResponse {
     private boolean active;
     private LocalDateTime updatedAt;
 
-    public static MemberResponse from(MemberEntity member) {
+    public static MemberResponse from(MemberEntity memberEntity) {
         return MemberResponse.builder()
-                .id(member.getId())
-                .userId(member.getUserId())
-                .name(member.getName())
-                .contact(member.getContact())
-                .messageType(member.getMessageType())
-                .joinDate(member.getJoinDate())
+                .id(memberEntity.getId())
+                .userId(memberEntity.getUserId())
+                .name(memberEntity.getName())
+                .contact(memberEntity.getContact())
+                .email(memberEntity.getEmail())
+                .messageType(memberEntity.getMessageType())
+                .joinDate(memberEntity.getJoinDate())
                 .build();
     }
 }

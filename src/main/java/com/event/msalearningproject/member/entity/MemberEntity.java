@@ -6,9 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ToString
 @Getter
+@Setter
 @Table(name = "member")
 @Entity
 @Builder
@@ -32,6 +34,9 @@ public class MemberEntity {
     @Column(nullable = false, length = 20)
     private String contact;
 
+    @Column(nullable = false, length = 100)
+    private String email;
+
     @Enumerated(EnumType.STRING)
     @Column
     private MessageType messageType;
@@ -44,6 +49,6 @@ public class MemberEntity {
     private LocalDateTime exitDate;
 
     @Column(nullable = false)
-    private Boolean active = true;
+    private boolean active = true;
 
 }

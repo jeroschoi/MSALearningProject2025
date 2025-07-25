@@ -1,6 +1,7 @@
 package com.event.msalearningproject.member.dto;
 
 import com.event.msalearningproject.member.entity.MessageType;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -27,6 +28,10 @@ public class MemberJoinRequest {
     @NotBlank(message = "연락처는 필수입니다")
     @Pattern(regexp = "^01[0-9]-?[0-9]{4}-?[0-9]{4}$", message = "올바른 휴대폰 번호 형식이 아닙니다")
     private String contact;
+
+    @NotBlank(message = "이메일은 필수입니다")
+    @Email(message = "올바른 이메일 형식이 아닙니다")
+    private String email;
 
     @NotNull(message = "메시지 타입은 필수입니다")
     private MessageType messageType;
