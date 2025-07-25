@@ -38,7 +38,7 @@ public class DataSourceConfig {
         emf.setPersistenceUnitName("persistenceJpa");
         emf.setPackagesToScan("com.event.msalearningproject.example.entity");
 
-        // Hibernate ¼³Á¤
+        // Hibernate  configuration properties
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", "create-drop");
         properties.put("hibernate.show_sql", true);

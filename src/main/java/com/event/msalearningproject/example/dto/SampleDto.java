@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-public class SampleDTO {
+public class SampleDto {
     private long id;
     private String content;
 }
