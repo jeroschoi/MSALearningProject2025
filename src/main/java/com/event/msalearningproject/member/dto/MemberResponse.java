@@ -1,7 +1,6 @@
 package com.event.msalearningproject.member.dto;
 
-import com.event.msalearningproject.member.entity.MemberEntity;
-import com.event.msalearningproject.member.entity.MessageType;
+import com.event.msalearningproject.member.repository.entity.MessageType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,19 +19,7 @@ public class MemberResponse {
     private String email;
     private String address;
     private LocalDateTime joinDate;
-    private LocalDateTime withdrawDate;
+    private LocalDateTime exitDate;
     private boolean active;
     private LocalDateTime updatedAt;
-
-    public static MemberResponse from(MemberEntity memberEntity) {
-        return MemberResponse.builder()
-                .id(memberEntity.getId())
-                .userId(memberEntity.getUserId())
-                .name(memberEntity.getName())
-                .contact(memberEntity.getContact())
-                .email(memberEntity.getEmail())
-                .messageType(memberEntity.getMessageType())
-                .joinDate(memberEntity.getJoinDate())
-                .build();
-    }
 }

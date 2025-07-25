@@ -1,4 +1,4 @@
-package com.event.msalearningproject.member.entity;
+package com.event.msalearningproject.member.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,4 +43,4 @@ public class MessageHistoryEntity {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime sentAt;
-}
+} 

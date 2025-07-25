@@ -1,4 +1,4 @@
-package com.event.msalearningproject.member.entity;
+package com.event.msalearningproject.member.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,6 +49,6 @@ public class MemberEntity {
     private LocalDateTime exitDate;
 
     @Column(nullable = false)
-    private boolean active = true;
+    private boolean active;
 
 }

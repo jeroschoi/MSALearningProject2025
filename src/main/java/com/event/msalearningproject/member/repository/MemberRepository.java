@@ -1,6 +1,6 @@
 package com.event.msalearningproject.member.repository;
 
-import com.event.msalearningproject.member.entity.MemberEntity;
+import com.event.msalearningproject.member.repository.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +16,11 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
     Optional<MemberEntity> findByEmail(String email);
 
+    List<MemberEntity> findByActiveTrue();
+
     boolean existsByUserId(String userId);
 
-    boolean existsByContact(String contact);
+    boolean existsByEmail(String email);
 
-    List<MemberEntity> findByActiveTrue();
+    boolean existsByContact(String contact);
 }
