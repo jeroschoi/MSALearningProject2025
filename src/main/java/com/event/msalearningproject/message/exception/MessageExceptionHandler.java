@@ -18,7 +18,10 @@ import java.util.Map;
 @Slf4j
 public class MessageExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
+            IllegalArgumentException.class
+    })
     public ResponseEntity<Map<String, String>> handleValidationError(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
@@ -42,4 +45,5 @@ public class MessageExceptionHandler {
         responseDto.setMessage(errorMessage);
         return ResponseEntity.status(500).body(responseDto);
     }
+
 }

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -95,7 +96,22 @@ public class MessageService {
      * 휴대폰 번호 포맷팅
      */
     private String formatPhoneNumber(String rawNumber) {
-        return rawNumber.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+        if (rawNumber == null) return null;
+
+        // 숫자 추출
+        String digits = rawNumber.replaceAll("\\D", "");
+        log.info("포맷팅 전 휴대폰 번호: {}, 추출된 숫자: {}", rawNumber, digits);
+
+        if (digits.length() == 10) {
+            // 010-123-1234
+            return digits.replaceFirst("(\\d{3})(\\d{3})(\\d{4})", "$1-$2-$3");
+        } else if (digits.length() == 11) {
+            // 010-1234-1234
+            return digits.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+        } else {
+            log.error("Invalid phone number format: {}", rawNumber);
+            throw new IllegalArgumentException("올바르지 않은 휴대폰 번호입니다: " + rawNumber);
+        }
     }
 
 }

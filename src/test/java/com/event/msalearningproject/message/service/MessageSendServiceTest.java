@@ -84,5 +84,4 @@ class MessageSendServiceTest {
         assertNotNull(selected);
         assertEquals(PushMessage.class, selected.getClass());
     }
-
 }

@@ -16,10 +16,10 @@ public class MessageRequestDto {
     @NotBlank(message = "회원 ID는 필수입니다.")
     private String memberId;
 
-    @Schema(description = "연락처", example = "010-1234-5678")
+    @Schema(description = "연락처", example = "010-1234-5678 , 010-123-1234")
     @NotBlank(message = "연락처는 필수입니다.")
     @Pattern(
-            regexp = "^01[0-9]{1}-?[0-9]{3,4}-?[0-9]{4}$",
+            regexp = "^01[0-9]-\\d{3,4}-\\d{4}$",
             message = "연락처 형식이 올바르지 않습니다. (예: 010-1234-5678)"
     )
     private String phoneNumber;
