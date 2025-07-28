@@ -1,6 +1,6 @@
 package com.event.msalearningproject.example.service;
 
-import com.event.msalearningproject.example.dto.SampleDTO;
+import com.event.msalearningproject.example.dto.SampleDto;
 import com.event.msalearningproject.example.entity.SampleEntity;
 import com.event.msalearningproject.example.repository.SampleRepository;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,13 +28,13 @@ class ExampleServiceTest {
     void sampleSelectSuccessTest() {
         SampleEntity entity = SampleEntity.builder().id(1L).content("test").build();
         Mockito.when(sampleRepository.findById(1L)).thenReturn(Optional.of(entity));
-        String result = exampleService.sampleSelect(1L);
-        assertThat(result).contains("test");
+        SampleDto result = exampleService.sampleSelect(1L);
+        assertThat(result.getContent()).isEqualTo("test");
     }
 
     @Test
     void sampleUpdateSuccessTest() {
-        SampleDTO dto = SampleDTO.builder().id(1L).content("update").build();
+        SampleDto dto = SampleDto.builder().id(1L).content("update").build();
         Mockito.when(sampleRepository.save(any())).thenReturn(
                 SampleEntity.builder().id(1L).content("update").build()
         );
@@ -45,7 +44,7 @@ class ExampleServiceTest {
 
     @Test
     void sampleInsertSuccessTest() {
-        SampleDTO dto = SampleDTO.builder().content("insert").build();
+        SampleDto dto = SampleDto.builder().content("insert").build();
         Mockito.when(sampleRepository.save(any())).thenReturn(
                 SampleEntity.builder().id(2L).content("insert").build()
         );

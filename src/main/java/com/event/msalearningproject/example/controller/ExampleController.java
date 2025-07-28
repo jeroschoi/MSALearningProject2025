@@ -1,6 +1,6 @@
 package com.event.msalearningproject.example.controller;
 
-import com.event.msalearningproject.example.dto.SampleDTO;
+import com.event.msalearningproject.example.dto.SampleDto;
 import com.event.msalearningproject.example.service.ExampleService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class ExampleController {
 
     @GetMapping("/sample")
     @Operation(summary = "Example API", description = "Example API  to Select Sample Data")
-    public ResponseEntity<String> sampleSelect(Long id) {
+    public ResponseEntity<SampleDto> sampleSelect(Long id) {
         log.info("sampleSelect API Start");
         return ResponseEntity.ok(exampleService.sampleSelect(id));
     }
@@ -30,7 +30,7 @@ public class ExampleController {
         log.info("sampleUpdate API Start");
         return ResponseEntity.ok(
                 exampleService.sampleUpdate(
-                        SampleDTO.builder()
+                        SampleDto.builder()
                                  .id(id)
                                  .content(content)
                                  .build()
@@ -43,7 +43,7 @@ public class ExampleController {
         log.info("sampleInsert API Start");
         return ResponseEntity.ok(
                 exampleService.sampleInsert(
-                        SampleDTO.builder()
+                        SampleDto.builder()
                                 .content(content)
                                 .build()
                 ));

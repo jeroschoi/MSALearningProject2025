@@ -1,7 +1,8 @@
 package com.event.msalearningproject.example.service;
 
-import com.event.msalearningproject.example.dto.SampleDTO;
+import com.event.msalearningproject.example.dto.SampleDto;
 import com.event.msalearningproject.example.entity.SampleEntity;
+import com.event.msalearningproject.example.mapper.ExampleMapper;
 import com.event.msalearningproject.example.repository.SampleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,22 +16,19 @@ public class ExampleService {
 
     final private SampleRepository sampleRepository;
 
-    public String sampleSelect(Long id) {
-        return sampleRepository.findById(id).toString();
+    public SampleDto sampleSelect(Long id) {
+        return ExampleMapper.INSTANCE.sampleEntityToDto(sampleRepository.findById(id).orElse(null));
     }
 
     @Transactional
-    public String sampleUpdate(SampleDTO sampleDto) {
+    public String sampleUpdate(SampleDto sampleDto) {
         log.info("sampleUpdate data : {}", sampleDto.toString());
-        sampleRepository.save(SampleEntity.builder()
-                        .id(sampleDto.getId())
-                        .content(sampleDto.getContent())
-                        .build());
+        sampleRepository.save(ExampleMapper.INSTANCE.sampleDtoToEntity(sampleDto));
         return "update success";
     }
 
     @Transactional
-    public String sampleInsert(SampleDTO sampleDto) {
+    public String sampleInsert(SampleDto sampleDto) {
         log.info("sampleInsert data : {}", sampleDto.toString());
         sampleRepository.save(SampleEntity.builder()
                 .content(sampleDto.getContent())
