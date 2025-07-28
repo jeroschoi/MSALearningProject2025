@@ -12,14 +12,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 
@@ -36,11 +34,12 @@ class MessageServiceTest {
     @DisplayName("메시지 이력 저장 성공 테스트")
     void saveMessageHistorySuccessTest() {
         // given
-        MessageRequestDto dto = new MessageRequestDto();
-        dto.setMemberId("memberId");
-        dto.setPhoneNumber("010-1234-5678");
-        dto.setContent("Test message content");
-        dto.setMessageType(MessageType.SMS);
+        MessageRequestDto dto = MessageRequestDto.builder()
+                .messageType(MessageType.SMS)
+                .memberId("memberId")
+                .content("Test message content")
+                .phoneNumber("010-1234-5678")
+                .build();
 
         MessageHistory messageHistory = MessageHistory.builder()
                 .id(1L)
@@ -69,11 +68,12 @@ class MessageServiceTest {
         String phoneNumber = "010-1234-5678";
 
         // given
-        MessageRequestDto dto = new MessageRequestDto();
-        dto.setMemberId("memberId");
-        dto.setPhoneNumber(phoneNumber);
-        dto.setContent("Test message content");
-        dto.setMessageType(MessageType.SMS);
+        MessageRequestDto dto = MessageRequestDto.builder()
+                .messageType(MessageType.SMS)
+                .memberId("memberId")
+                .content("Test message content")
+                .phoneNumber("010-1234-5678")
+                .build();
 
 
         MessageHistory savedEntity = MessageHistory.builder()

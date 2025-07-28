@@ -10,6 +10,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 public class MessageRequestDto {
 
     @Schema(description = "회원 ID", example = "member123")
