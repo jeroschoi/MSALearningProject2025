@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 @Configuration
 @EnableJpaRepositories(basePackages =
-        "com.event.msalearningproject.example.repository"
+        "com.event.msalearningproject"
         , transactionManagerRef = "jpaTransactionManager")
 public class DataSourceConfig {
     @Bean
@@ -36,7 +36,7 @@ public class DataSourceConfig {
         emf.setJpaVendorAdapter(jpaVendorAdapter());
         emf.setDataSource(dataSource);
         emf.setPersistenceUnitName("persistenceJpa");
-        emf.setPackagesToScan("com.event.msalearningproject.example.entity");
+        emf.setPackagesToScan("com.event.msalearningproject");
 
         // Hibernate  configuration properties
         HashMap<String, Object> properties = new HashMap<>();
