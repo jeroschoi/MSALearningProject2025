@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3'
+    id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -26,7 +26,8 @@ repositories {
 dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // H2 DB
     runtimeOnly 'com.h2database:h2'
@@ -35,9 +36,6 @@ dependencies {
     // DB Access
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation ("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation ("org.hibernate.validator:hibernate-validator:6.2.0.Final")
-    implementation ('org.glassfish:jakarta.el:3.0.4')
-    //implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
 
     // Event Middleware Rabbit MQ & Kafka
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
@@ -46,12 +44,19 @@ dependencies {
     // Server API Call library
     //implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
+    // Circuit Breaker
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
+    implementation 'io.github.resilience4j:resilience4j-reactor:2.1.0'
+    testImplementation("org.mockito:mockito-subclass:5.17.0")
+    // webclient 검증
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.11.0'
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
     // JACKSON CONVERT Library
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.5'
+
+    implementation 'org.modelmapper:modelmapper:3.1.0'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

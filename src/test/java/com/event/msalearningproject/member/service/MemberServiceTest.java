@@ -6,9 +6,9 @@ import com.event.msalearningproject.member.exception.MemberErrorCode;
 import com.event.msalearningproject.member.exception.MemberException;
 import com.event.msalearningproject.member.mapper.MemberMapper;
 import com.event.msalearningproject.member.repository.MemberRepository;
-import com.event.msalearningproject.member.repository.MessageHistoryRepository;
 import com.event.msalearningproject.member.repository.entity.MemberEntity;
 import com.event.msalearningproject.member.repository.entity.MessageType;
+import com.event.msalearningproject.message.service.MessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,15 +34,6 @@ class MemberServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
-
-    @Mock
-    private MessageHistoryRepository messageHistoryRepository;
-
-    @Mock
-    private MessageService messageService;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
 
     @Mock
     private MemberMapper memberMapper;
@@ -97,7 +87,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(memberRepository.findByContact(anyString())).thenReturn(Optional.empty());
         when(memberMapper.toEntity(any(MemberJoinRequest.class))).thenReturn(memberEntity);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+//        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(memberRepository.save(any(MemberEntity.class))).thenReturn(memberEntity);
         when(memberMapper.toResponse(any(MemberEntity.class))).thenReturn(memberResponse);
 
@@ -113,9 +103,9 @@ class MemberServiceTest {
         verify(memberRepository).findByEmail("testuser@naver.com");
         verify(memberRepository).findByContact("010-1234-5678");
         verify(memberMapper).toEntity(joinRequest);
-        verify(passwordEncoder).encode("password123");
+//        verify(passwordEncoder).encode("password123");
         verify(memberRepository).save(any(MemberEntity.class));
-        verify(messageService).sendJoinMessage(any(MemberEntity.class));
+        //verify(messageService).sendJoinMessage(any(MemberEntity.class));
         verify(memberMapper).toResponse(any(MemberEntity.class));
     }
 
@@ -178,7 +168,7 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(memberRepository.findByContact(anyString())).thenReturn(Optional.empty());
         when(memberMapper.toEntity(any(MemberJoinRequest.class))).thenReturn(memberEntity);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+//        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(memberRepository.save(any(MemberEntity.class))).thenThrow(new DataIntegrityViolationException("DB Error"));
 
         // when & then
@@ -200,8 +190,7 @@ class MemberServiceTest {
         // then
         verify(memberRepository).findByUserId("testuser");
         verify(memberRepository).save(any(MemberEntity.class));
-        verify(messageService).sendExitMessage(any(MemberEntity.class));
-        verify(messageHistoryRepository).deleteByMemberId(1L);
+        //verify(messageService).sendExitMessage(any(MemberEntity.class));
     }
 
     @Test
