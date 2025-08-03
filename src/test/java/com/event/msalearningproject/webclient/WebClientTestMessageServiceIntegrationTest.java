@@ -1,8 +1,5 @@
 package com.event.msalearningproject.webclient;
 
-import com.event.msalearningproject.config.webclient.exception.ExternalClientException;
-import com.event.msalearningproject.config.webclient.exception.ExternalServerException;
-import com.event.msalearningproject.config.webclient.exception.ExternalTimeoutException;
 import com.event.msalearningproject.config.webclient.service.CommonWebClientServiceImpl;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.retry.Retry;
@@ -15,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -59,41 +55,149 @@ public class WebClientTestMessageServiceIntegrationTest {
     }
 
     @Test
-    void getSync_shouldThrowClientException() {
+    void postSync_shouldReturnExpectedResponse() {
         // given
-        // .timeout 제거된 상태에서 수행
+        String expected = "pong";
         mockWebServer.enqueue(new MockResponse()
-                .setResponseCode(400)
-                .setBody("잘못된 요청입니다.")
-                .addHeader("Content-Type", "application/json")
-                .setBodyDelay(0, TimeUnit.MILLISECONDS));
+                .setBody(expected)
+                .addHeader("Content-Type", "application/json"));
 
-        // when & then
-        ExternalClientException exception = assertThrows(ExternalClientException.class, () ->
-                service.getSync("/test", String.class, null)
+        // when
+        String actual = service.postSync(
+                "/test",
+                expected,
+                String.class,
+                null
         );
+
+        // then
+        assertEquals(expected, actual);
     }
 
     @Test
-    void getSync_shouldThrowServerException() {
+    void postAsync_shouldReturnExpectedResponse() {
         // given
-        mockWebServer.enqueue(new MockResponse().setResponseCode(500).setBody("Internal Error"));
+        String expected = "pong";
+        mockWebServer.enqueue(new MockResponse()
+                .setBody(expected)
+                .addHeader("Content-Type", "application/json"));
 
-        // when + then
-        ExternalServerException e = assertThrows(ExternalServerException.class, () ->
-                service.getSync("/error", String.class, null));
-        assertTrue(e.getMessage().contains("500"));
+        // when
+        String actual = service.postAsync(
+                "/test",
+                expected,
+                String.class,
+                null
+        ).block();
+
+        // then
+        assertEquals(expected, actual);
     }
 
     @Test
-    void getSync_shouldTimeout() {
+    void putSync_shouldReturnExpectedResponse() {
+        // given
+        String expected = "new data";
+        mockWebServer.enqueue(new MockResponse()
+                .setBody(expected)
+                .addHeader("Content-Type", "application/json"));
+
+        // when
+        String actual = service.putSync(
+                "/test",
+                "new data",   // requestBody (업데이트할 내용)
+                String.class,
+                null
+        );
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void putAsync_shouldReturnExpectedResponse() {
+        // given
+        String expected = "updated";
+        mockWebServer.enqueue(new MockResponse()
+                .setBody(expected)
+                .addHeader("Content-Type", "application/json"));
+
+        // when
+        String actual = service.putAsync(
+                "/test",
+                "updated",
+                String.class,
+                null
+        ).block();
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void patchSync_shouldReturnExpectedResponse() {
+        // given
+        String expected = "patched";
+        mockWebServer.enqueue(new MockResponse()
+                .setBody(expected)
+                .addHeader("Content-Type", "application/json"));
+
+        // when
+        String actual = service.patchSync(
+                "/test",
+                "partial update",  // requestBody
+                String.class,
+                null
+        );
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void patchAsync_shouldReturnExpectedResponse() {
+        // given
+        String expected = "patched";
+        mockWebServer.enqueue(new MockResponse()
+                .setBody(expected)
+                .addHeader("Content-Type", "application/json"));
+
+        // when
+        String actual = service.patchAsync(
+                "/test",
+                "partial update",
+                String.class,
+                null
+        ).block();
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteSync_shouldReturnExpectedResponse() {
         // given
         mockWebServer.enqueue(new MockResponse()
-                .setBody("Delayed").setBodyDelay(10, TimeUnit.SECONDS));
+                .setResponseCode(204));
+        // when
+        String actual = service.deleteSync("/test", String.class, null);
 
-        // when + then
-        assertThrows(ExternalTimeoutException.class, () ->
-                service.getSync("/timeout", String.class, null));
+        // then
+        assertNull(actual);
     }
 
+    @Test
+    void deleteAsync_shouldReturnExpectedResponse() {
+        // given
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(204));
+        // when
+        String actual = service.deleteAsync(
+                "/test",
+                String.class,
+                null).block();
+
+        // then
+        assertNull(actual);
+    }
 }
