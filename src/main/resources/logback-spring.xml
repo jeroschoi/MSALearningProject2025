@@ -2,8 +2,15 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %green(%5p) [%15.15t{14}] [%X{requestId}] %cyan(%-40.40logger{39}) : %m
-                %magenta(at %C).\(%F:%L\) %n
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} <!-- 시간 -->
+                %green(%5p)                 <!-- 로그 레벨 -->
+                [%15.15t{14}]               <!-- 로거 이름 -->
+                [%X{traceId}]               <!-- 요청 ID -->
+                %cyan(%-40.40logger{39}) :  <!-- 로거 이름 -->
+                %m                          <!-- 메시지 -->
+                %magenta(at %C).\(%F:%L\)   <!-- 파일 이름과 줄 번호 -->
+                %n                          <!-- 줄 바꿈 -->
             </pattern>
         </encoder>
     </appender>

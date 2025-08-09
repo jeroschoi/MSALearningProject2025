@@ -19,8 +19,27 @@ spring:
     defer-datasource-initialization: true
     database-platform:  org.hibernate.dialect.H2Dialect
 
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: msa-learning-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 # Swagger URL Path
 springdoc:
   swagger-ui:
     path: /msa/swagger.html
+
+# Kafka Topics
+kafka:
+  topic:
+    default: msa-default-topic
+    member: msa-member-topic
+    message: msa-message-topic
 
