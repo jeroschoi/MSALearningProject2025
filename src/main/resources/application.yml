@@ -1,7 +1,10 @@
 spring:
   application:
     name: MSALearningProject
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   datasource:
     hikari:
@@ -24,3 +27,6 @@ springdoc:
   swagger-ui:
     path: /msa/swagger.html
 
+jwt:
+  secret: msaprojectmsaprojectmsaprojectmsaprojectmsaproject
+  access-token-validity-in-seconds: 3600
