@@ -1,5 +1,42 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### API 테스트를 위한 환경 변수 설정
+@host = http://localhost:8080
+@userId = ideauser
+@password = Password123!
 
-###
+### 1. 회원가입 API
+# 새로운 회원을 등록합니다.
+POST {{host}}/msa/v1/members
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "password": "{{password}}",
+  "name": "인텔리제이",
+  "contact": "010-9999-8888",
+  "email": "idea@example.com",
+  "messageType": "SMS"
+}
+
+
+### ---------------------------------------------------
+### 2. 로그인 API 및 Access Token 자동 저장
+# 로그인 성공 후 응답받은 accessToken을 'accessToken' 변수에 자동으로 저장합니다.
+POST {{host}}/msa/v1/auth/login
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "password": "{{password}}"
+}
+
+> {%
+    client.global.set("accessToken", response.body.data.accessToken);
+%}
+
+
+### ---------------------------------------------------
+### 3. 회원 정보 조회 API (인증 필요)
+# 위에서 저장한 'accessToken' 변수를 Authorization 헤더에 자동으로 사용합니다.
+GET {{host}}/msa/v1/members/{{userId}}
+Authorization: Bearer {{accessToken}}
+
