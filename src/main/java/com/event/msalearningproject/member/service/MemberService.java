@@ -14,6 +14,7 @@ import com.event.msalearningproject.message.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,7 @@ public class MemberService {
     private final MessageService messageService;
     private final MessageSendService messageSendService;
     private final MemberMapper memberMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MemberResponse join(MemberJoinRequest request) {
@@ -53,7 +55,7 @@ public class MemberService {
 
     private MemberEntity createMemberEntity(MemberJoinRequest request) {
         MemberEntity memberEntity = memberMapper.toEntity(request);
-        memberEntity.setPassword(request.getPassword());
+        memberEntity.setPassword(passwordEncoder.encode(request.getPassword()));
         return memberEntity;
     }
 
