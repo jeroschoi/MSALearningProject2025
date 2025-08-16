@@ -1,19 +1,15 @@
 package com.event.msalearningproject.message.service;
 
-import com.event.msalearningproject.example.dto.SampleDto;
-import com.event.msalearningproject.example.entity.SampleEntity;
+
 import com.event.msalearningproject.message.dto.MessageRequestDto;
 import com.event.msalearningproject.message.entity.MessageHistory;
-import com.event.msalearningproject.message.entity.MessageType;
 import com.event.msalearningproject.message.mapper.MessageMapper;
 import com.event.msalearningproject.message.repository.MessageRespository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 

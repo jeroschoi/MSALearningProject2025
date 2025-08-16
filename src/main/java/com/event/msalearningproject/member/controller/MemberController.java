@@ -17,7 +17,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import com.event.msalearningproject.member.exception.MemberErrorCode;
 
 @Slf4j
@@ -25,7 +24,7 @@ import com.event.msalearningproject.member.exception.MemberErrorCode;
 @RequestMapping("/msa/v1/members")
 @RequiredArgsConstructor
 @Tag(name = "Member Management", description = "회원 관리 API")
-public class MemberController {
+public class                                            MemberController {
 
     private final MemberService memberService;
 

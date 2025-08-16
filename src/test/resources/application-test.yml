@@ -23,3 +23,7 @@ logging:
   level:
     com.event.msalearningproject: DEBUG
     org.springframework.test: DEBUG
+
+
+
+

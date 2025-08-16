@@ -1,7 +1,6 @@
 package com.event.msalearningproject.message.exception;
 
 import com.event.msalearningproject.message.dto.GlobalErrorReponseDto;
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
