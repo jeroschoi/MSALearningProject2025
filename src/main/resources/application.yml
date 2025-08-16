@@ -24,3 +24,8 @@ springdoc:
   swagger-ui:
     path: /msa/swagger.html
 
+auth:
+  jwt:
+    secret-key: 807b56a7541af9f1c480dff4f3936b04fb75cece9f7ea40d25c3a57c7786fb7c
+    expire-ms : 3600000
+
