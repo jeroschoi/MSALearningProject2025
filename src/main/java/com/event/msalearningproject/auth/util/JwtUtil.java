@@ -21,10 +21,12 @@ public class JwtUtil {
 
     private final Key secretKey;
     private final long accessTokenValidityInSeconds;
+    private final long refreshTokenValidityInSeconds;
 
     public JwtUtil(JwtProperties jwtProperties) {
         this.secretKey = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
         this.accessTokenValidityInSeconds = jwtProperties.getAccessTokenValidityInSeconds();
+        this.refreshTokenValidityInSeconds = jwtProperties.getRefreshTokenValidityInSeconds();
     }
 
     /**
@@ -32,9 +34,21 @@ public class JwtUtil {
      * @param userId 사용자 ID
      * @return 생성된 JWT 문자열
      */
-    public String generateToken(String userId) {
+    public String generateAccessToken(String userId) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.accessTokenValidityInSeconds * 1000);
+
+        return Jwts.builder()
+                .setSubject(userId)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(String userId) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + this.refreshTokenValidityInSeconds * 1000);
 
         return Jwts.builder()
                 .setSubject(userId)
@@ -104,10 +118,18 @@ public class JwtUtil {
     }
 
     /**
-     * 설정된 토큰 유효 시간을 반환합니다.
+     * 설정된 Access Token 유효 시간을 반환합니다.
      * @return 토큰 유효 시간 (초)
      */
     public long getAccessTokenValidityInSeconds() {
         return this.accessTokenValidityInSeconds;
+    }
+
+    /**
+     * 설정된 Refresh Token 유효 시간을 반환합니다.
+     * @return 토큰 유효 시간 (초)
+     */
+    public long getRefreshTokenValidityInSeconds() { // 👈 메소드 추가
+        return this.refreshTokenValidityInSeconds;
     }
 }

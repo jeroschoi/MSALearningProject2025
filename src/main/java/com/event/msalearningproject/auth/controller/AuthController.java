@@ -1,6 +1,7 @@
 package com.event.msalearningproject.auth.controller;
 
 import com.event.msalearningproject.auth.dto.LoginRequestDto;
+import com.event.msalearningproject.auth.dto.TokenReissueRequestDto;
 import com.event.msalearningproject.auth.dto.TokenResponseDto;
 import com.event.msalearningproject.auth.service.AuthService;
 import com.event.msalearningproject.member.dto.MemberCommonResponse;
@@ -26,6 +27,13 @@ public class AuthController {
     @Operation(summary = "로그인", description = "사용자 ID와 비밀번호로 로그인하여 JWT 토큰을 발급받습니다.")
     public ResponseEntity<MemberCommonResponse<TokenResponseDto>> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
         TokenResponseDto tokenResponse = authService.login(loginRequestDto);
+        return ResponseEntity.ok(MemberCommonResponse.success(tokenResponse));
+    }
+
+    @PostMapping("/reissue")
+    @Operation(summary = "토큰 재발급", description = "Refresh Token을 사용하여 새로운 Access Token을 발급받습니다.")
+    public ResponseEntity<MemberCommonResponse<TokenResponseDto>> reissue(@RequestBody TokenReissueRequestDto reissueRequestDto) {
+        TokenResponseDto tokenResponse = authService.reissue(reissueRequestDto);
         return ResponseEntity.ok(MemberCommonResponse.success(tokenResponse));
     }
 }

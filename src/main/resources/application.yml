@@ -30,3 +30,4 @@ springdoc:
 jwt:
   secret: msaprojectmsaprojectmsaprojectmsaprojectmsaproject
   access-token-validity-in-seconds: 3600
+  refresh-token-validity-in-seconds: 604800
