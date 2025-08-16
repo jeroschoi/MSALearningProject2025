@@ -7,7 +7,10 @@ import com.event.msalearningproject.member.exception.MemberErrorCode;
 import com.event.msalearningproject.member.exception.MemberException;
 import com.event.msalearningproject.member.mapper.MemberMapper;
 import com.event.msalearningproject.member.repository.MemberRepository;
-import com.event.msalearningproject.member.repository.MessageHistoryRepository;
+import com.event.msalearningproject.message.dto.MessageRequestDto;
+import com.event.msalearningproject.message.entity.MessageType;
+import com.event.msalearningproject.message.service.MessageSendService;
+import com.event.msalearningproject.message.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,10 +28,10 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MessageHistoryRepository messageHistoryRepository;
     private final MessageService messageService;
-    private final PasswordEncoder passwordEncoder;
+    private final MessageSendService messageSendService;
     private final MemberMapper memberMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MemberResponse join(MemberJoinRequest request) {
@@ -62,7 +65,13 @@ public class MemberService {
 
     private void sendJoinMessage(MemberEntity memberEntity) {
         try {
-            messageService.sendJoinMessage(memberEntity);
+            messageSendService.sendMessage(
+                    MessageRequestDto.builder()
+                            .memberId(memberEntity.getUserId())
+                            .messageType(MessageType.EMAIL)
+                            .content("환영합니다! " + memberEntity.getName() + "님, 회원가입이 완료되었습니다.")
+                            .build()
+            );
         } catch (Exception e) {
             log.error("회원가입 메시지 전송 실패: {} - {}", memberEntity.getUserId(), e.getMessage());
         }
@@ -92,10 +101,8 @@ public class MemberService {
     public void exit(String userId) {
         try {
             MemberEntity memberEntity = findAndValidateMember(userId);
-            MemberEntity savedMemberEntity = deactivateMember(memberEntity);
-            sendExitMessage(savedMemberEntity);
-            deleteMessageHistory(memberEntity.getId());
-            
+            deactivateMember(memberEntity);
+            messageService.visableFalseMessageHistory(memberEntity.getUserId());
         } catch (MemberException e) {
             throw e;
         } catch (Exception e) {
@@ -121,18 +128,6 @@ public class MemberService {
         memberEntity.setActive(false);
         memberEntity.setExitDate(LocalDateTime.now());
         return memberRepository.save(memberEntity);
-    }
-
-    private void sendExitMessage(MemberEntity memberEntity) {
-        try {
-            messageService.sendExitMessage(memberEntity);
-        } catch (Exception e) {
-            log.error("회원탈퇴 메시지 전송 실패: {} - {}", memberEntity.getUserId(), e.getMessage());
-        }
-    }
-
-    private void deleteMessageHistory(Long memberId) {
-        messageHistoryRepository.deleteByMemberId(memberId);
     }
 
     @Transactional(readOnly = true)
