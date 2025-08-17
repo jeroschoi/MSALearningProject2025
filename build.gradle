@@ -28,6 +28,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     // implementation 'org.springframework.boot:spring-boot-starter-security'
+    
+    // Spring Cloud Gateway
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    
+    // Spring Cloud BOM
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2023.0.0')
+    
+    // JWT 관련
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
     // H2 DB
     runtimeOnly 'com.h2database:h2'
@@ -62,6 +73,17 @@ dependencies {
     // MapStruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    // Spring Cloud Gateway
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+    // Spring Cloud BOM
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2023.0.0')
+
+    // JWT 관련
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
