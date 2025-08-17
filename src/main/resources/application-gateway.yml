@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        # Member Service Routing
+        - id: member-service
+          uri: lb://member-service
+          predicates:
+            - Path=/api/v1/members/**
+          filters:
+            - name: JwtAuthenticationFilter
+            - StripPrefix=0
+            - name: CircuitBreaker
+              args:
+                name: memberCircuitBreaker
+                fallbackUri: forward:/fallback/member
+
+        # Message Service Routing
+        - id: message-service
+          uri: lb://message-service
+          predicates:
+            - Path=/api/v1/messages/**
+          filters:
+            - name: JwtAuthenticationFilter
+            - StripPrefix=0
+            - name: CircuitBreaker
+              args:
+                name: messageCircuitBreaker
+                fallbackUri: forward:/fallback/message
+
+# JWT Configuration
+jwt:
+  secret: msa-learning-project
+  expiration: 86400000 # 24 hours
+
+# Circuit Breaker Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      memberCircuitBreaker:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+      messageCircuitBreaker:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+
+# Server Configuration
+server:
+  port: 8080
+
+# Logging Configuration
+logging:
+  level:
+    com.event.msalearningproject.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
