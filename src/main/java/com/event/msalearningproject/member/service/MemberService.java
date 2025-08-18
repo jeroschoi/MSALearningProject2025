@@ -99,10 +99,9 @@ public class MemberService {
     public void exit(String userId) {
         try {
             MemberEntity memberEntity = findAndValidateMember(userId);
-            deactivateMember(memberEntity);
+            memberEntity.setActive(false);
+            memberEntity.setExitDate(LocalDateTime.now());
             messageService.visibleFalseMessageHistory(memberEntity.getUserId());
-        } catch (MemberException e) {
-            throw e;
         } catch (Exception e) {
             log.error("회원탈퇴 중 예상치 못한 오류: {} - {}", userId, e.getMessage());
             throw new MemberException(MemberErrorCode.INTERNAL_SERVER_ERROR, "예상치 못한 오류.");
@@ -120,12 +119,6 @@ public class MemberService {
         }
         
         return memberEntity;
-    }
-
-    private MemberEntity deactivateMember(MemberEntity memberEntity) {
-        memberEntity.setActive(false);
-        memberEntity.setExitDate(LocalDateTime.now());
-        return memberRepository.save(memberEntity);
     }
 
     @Transactional(readOnly = true)
@@ -152,7 +145,6 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public List<MemberResponse> getAllActiveMembers() {
-        List<MemberEntity> activeMembers = memberRepository.findByActiveTrue();
-        return memberMapper.toActiveResponseList(activeMembers);
+        return memberMapper.toActiveResponseList(memberRepository.findByActiveTrue());
     }
 }

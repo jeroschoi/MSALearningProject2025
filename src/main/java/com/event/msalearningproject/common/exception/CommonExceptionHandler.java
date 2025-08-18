@@ -1,10 +1,8 @@
-package com.event.msalearningproject.message.exception;
+package com.event.msalearningproject.common.exception;
 
-import com.event.msalearningproject.message.dto.GlobalErrorReponseDto;
-import io.swagger.v3.oas.annotations.Hidden;
+import com.event.msalearningproject.common.dto.CommonResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,7 +14,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
-public class MessageExceptionHandler {
+public class CommonExceptionHandler {
 
     @ExceptionHandler({
             MethodArgumentNotValidException.class,
@@ -31,19 +29,12 @@ public class MessageExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<GlobalErrorReponseDto> handleEntityNotFoundException(EntityNotFoundException e) {
+    public ResponseEntity<CommonResponse> handleEntityNotFoundException(EntityNotFoundException e) {
         String errorMessage = e.getMessage();
-        GlobalErrorReponseDto responseDto = new GlobalErrorReponseDto();
-        responseDto.setMessage(errorMessage);
-        return ResponseEntity.status(404).body(responseDto);
+        return ResponseEntity.status(404).body(
+                    CommonResponse.builder()
+                            .message(errorMessage)
+                            .build()
+        );
     }
-
-    @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<GlobalErrorReponseDto> handleDataAccessException(DataAccessException e) {
-        String errorMessage = "Database access error: " + e.getMessage();
-        GlobalErrorReponseDto responseDto = new GlobalErrorReponseDto();
-        responseDto.setMessage(errorMessage);
-        return ResponseEntity.status(500).body(responseDto);
-    }
-
 }

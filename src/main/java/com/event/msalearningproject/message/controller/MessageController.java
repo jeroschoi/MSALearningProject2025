@@ -1,7 +1,8 @@
 package com.event.msalearningproject.message.controller;
 
-import com.event.msalearningproject.message.dto.GlobalReponseDto;
+import com.event.msalearningproject.common.dto.CommonResponse;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
+import com.event.msalearningproject.message.dto.MultiMessageResponse;
 import com.event.msalearningproject.message.repository.entity.MessageHistory;
 import com.event.msalearningproject.message.service.MessageSendService;
 import com.event.msalearningproject.message.service.MessageService;
@@ -31,56 +32,25 @@ public class MessageController {
 
     @PostMapping("/send/single")
     @Operation(summary = "Send Single Message", description = "단건 메시지 전송")
-    public ResponseEntity<GlobalReponseDto> sendSingleMessage(@RequestBody @Valid MessageRequestDto requestDto ) {
-        GlobalReponseDto responseDto = new GlobalReponseDto();
-
-        boolean isSent = messageSendService.sendMessage(requestDto);
-        if (isSent) {
-            log.info("Message sent successfully: {}", requestDto);
-            Map<String, Object> result = new HashMap<>();
-            result.put("status", "success");
-            responseDto.setData(result);
-            return ResponseEntity.ok(responseDto);
-        } else {
-            log.warn("Message sending failed: {}", requestDto);
-            Map<String, Object> result = new HashMap<>();
-            result.put("status", "failed");
-            responseDto.setData(result);
-            return ResponseEntity.status(500).body(responseDto);
-        }
+    public ResponseEntity<CommonResponse<Boolean>> sendSingleMessage(@RequestBody @Valid MessageRequestDto requestDto ) {
+        log.info("Sending single message: {}", requestDto);
+        return ResponseEntity.ok(
+                CommonResponse.<Boolean>builder()
+                        .data(messageSendService.sendMessage(requestDto))
+                        //TODO Message Data enum 처리
+                        .message("message send success!")
+                        .build()
+        );
     }
 
     @PostMapping("/send/multi")
     @Operation(summary = "Send Multiple Messages", description = "다건 메시지 전송")
-    public ResponseEntity<GlobalReponseDto> sendMultipleMessages(@RequestBody @Valid List<MessageRequestDto> requestDtoList) {
-        GlobalReponseDto responseDto = new GlobalReponseDto();
-        int sentCount = 0;
-        List<MessageRequestDto> failedList = new ArrayList<>();
-
-        for (MessageRequestDto dto : requestDtoList) {
-            log.info("Sending message: {}", dto);
-            try {
-                boolean isSent = messageSendService.sendMessage(dto);
-                if (isSent) {
-                    log.info("Message sent successfully: {}", dto);
-                    sentCount++;
-                } else {
-                    log.warn("Message failed to send: {}", dto);
-                    failedList.add(dto);
-                }
-            } catch (Exception e) {
-                log.error("Exception while sending message: {}", dto, e);
-                failedList.add(dto);
-            }
-        }
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("totalCount", requestDtoList.size());
-        result.put("sentCount", sentCount);
-        result.put("failedCount", failedList.size());
-
-        responseDto.setData(result);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<CommonResponse<MultiMessageResponse>> sendMultipleMessages(@RequestBody @Valid List<MessageRequestDto> requestDtoList) {
+        return ResponseEntity.ok(
+                CommonResponse.<MultiMessageResponse>builder()
+                        .data(messageSendService.sendMultiMessage(requestDtoList))
+                        .build()
+        );
     }
 
 

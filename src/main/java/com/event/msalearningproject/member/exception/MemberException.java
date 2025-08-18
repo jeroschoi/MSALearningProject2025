@@ -1,25 +1,17 @@
 package com.event.msalearningproject.member.exception;
 
-public class MemberException extends RuntimeException {
-    
+import com.event.msalearningproject.common.exception.ServiceException;
+import lombok.Getter;
+
+@Getter
+public class MemberException extends ServiceException {
+
     private final MemberErrorCode errorCode;
-    
-    public MemberException(MemberErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
-    }
-    
+    private final String message;
+
     public MemberException(MemberErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
+        this.message = errorCode.getMessage();
     }
-    
-    public MemberException(MemberErrorCode errorCode, Throwable cause) {
-        super(errorCode.getMessage(), cause);
-        this.errorCode = errorCode;
-    }
-    
-    public MemberErrorCode getErrorCode() {
-        return errorCode;
-    }
-} 
+}

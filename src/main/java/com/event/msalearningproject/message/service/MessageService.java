@@ -76,8 +76,7 @@ public class MessageService {
         List<MessageHistory> result = repository.findByMemberIdAndVisibleTrueOrderBySentAtDesc(memberId);
         result.forEach(messageHistory -> {
             messageHistory.setVisible(false);
-            repository.save(messageHistory);
-            log.info("메시지 이력 삭제 - 회원 ID: {}, 메시지 ID: {}", memberId, messageHistory.getId());
+            log.debug("메시지 이력 삭제 - 회원 ID: {}, 메시지 ID: {}", memberId, messageHistory.getId());
         });
         if (result.isEmpty()) {
             log.error("메시지 이력 삭제 실패 - 회원 ID: {}", memberId);
@@ -108,5 +107,4 @@ public class MessageService {
             throw new IllegalArgumentException("올바르지 않은 휴대폰 번호입니다: " + rawNumber);
         }
     }
-
 }
