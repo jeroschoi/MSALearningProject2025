@@ -19,7 +19,6 @@ public class MessageService {
 
     private final MessageRepository repository;
 
-
     /**
      * 메시지 이력 저장
      * @param dto 메시지 요청 DTO

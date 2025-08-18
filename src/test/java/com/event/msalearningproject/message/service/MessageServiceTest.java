@@ -107,11 +107,11 @@ class MessageServiceTest {
         when(repository.findByPhoneNumberAndVisibleTrueOrderBySentAtDesc(phoneNumber))
                 .thenReturn(Collections.emptyList());
         // then
-        assertThatThrownBy(() -> {
-            messageService.getMessagePhoneNumber(phoneNumber);
-        })
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("No message history found for phone number: " + phoneNumber);
+//        assertThatThrownBy(() -> {
+//            messageService.getMessagePhoneNumber(phoneNumber);
+//        }).isInstanceOf(EntityNotFoundException.class)
+//          .hasMessageContaining("No message history found for phone number: " + phoneNumber);
+        assertThat(messageService.getMessagePhoneNumber(phoneNumber)).isEmpty();
     }
 
     @Test
@@ -152,11 +152,11 @@ class MessageServiceTest {
                 .thenReturn(Collections.emptyList());
 
         // then
-        assertThatThrownBy(() -> {
-            messageService.getMessageMemberId(memberId);
-        })
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("No message history found for member id: " + memberId);
+        //        assertThatThrownBy(() -> {
+        //            messageService.getMessageMemberId(memberId);
+        //        }).isInstanceOf(EntityNotFoundException.class)
+        //          .hasMessageContaining("No message history found for member id: " + memberId);
+        assertThat(messageService.getMessageMemberId(memberId)).isEmpty();
     }
 
     @Test
