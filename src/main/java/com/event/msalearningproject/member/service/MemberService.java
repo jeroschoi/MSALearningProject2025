@@ -8,7 +8,7 @@ import com.event.msalearningproject.member.exception.MemberException;
 import com.event.msalearningproject.member.mapper.MemberMapper;
 import com.event.msalearningproject.member.repository.MemberRepository;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
-import com.event.msalearningproject.message.entity.MessageType;
+import com.event.msalearningproject.message.dto.MessageType;
 import com.event.msalearningproject.message.service.MessageSendService;
 import com.event.msalearningproject.message.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -100,7 +100,7 @@ public class MemberService {
         try {
             MemberEntity memberEntity = findAndValidateMember(userId);
             deactivateMember(memberEntity);
-            messageService.visableFalseMessageHistory(memberEntity.getUserId());
+            messageService.visibleFalseMessageHistory(memberEntity.getUserId());
         } catch (MemberException e) {
             throw e;
         } catch (Exception e) {

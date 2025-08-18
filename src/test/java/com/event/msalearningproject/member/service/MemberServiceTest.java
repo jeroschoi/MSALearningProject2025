@@ -38,6 +38,10 @@ class MemberServiceTest {
     @Mock
     private MemberMapper memberMapper;
 
+    // 회원 가입 및 탈퇴시 메시지 전송을 위한 서비스
+    @Mock
+    private MessageService messageService;
+
     @InjectMocks
     private MemberService memberService;
 
@@ -87,7 +91,6 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(memberRepository.findByContact(anyString())).thenReturn(Optional.empty());
         when(memberMapper.toEntity(any(MemberJoinRequest.class))).thenReturn(memberEntity);
-//        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(memberRepository.save(any(MemberEntity.class))).thenReturn(memberEntity);
         when(memberMapper.toResponse(any(MemberEntity.class))).thenReturn(memberResponse);
 
@@ -103,9 +106,7 @@ class MemberServiceTest {
         verify(memberRepository).findByEmail("testuser@naver.com");
         verify(memberRepository).findByContact("010-1234-5678");
         verify(memberMapper).toEntity(joinRequest);
-//        verify(passwordEncoder).encode("password123");
         verify(memberRepository).save(any(MemberEntity.class));
-        //verify(messageService).sendJoinMessage(any(MemberEntity.class));
         verify(memberMapper).toResponse(any(MemberEntity.class));
     }
 
@@ -168,7 +169,6 @@ class MemberServiceTest {
         when(memberRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(memberRepository.findByContact(anyString())).thenReturn(Optional.empty());
         when(memberMapper.toEntity(any(MemberJoinRequest.class))).thenReturn(memberEntity);
-//        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(memberRepository.save(any(MemberEntity.class))).thenThrow(new DataIntegrityViolationException("DB Error"));
 
         // when & then
@@ -190,7 +190,6 @@ class MemberServiceTest {
         // then
         verify(memberRepository).findByUserId("testuser");
         verify(memberRepository).save(any(MemberEntity.class));
-        //verify(messageService).sendExitMessage(any(MemberEntity.class));
     }
 
     @Test

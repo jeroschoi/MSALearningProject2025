@@ -2,8 +2,7 @@ package com.event.msalearningproject.config.webclient;
 
 import com.event.msalearningproject.config.webclient.service.CommonWebClientService;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
-import com.event.msalearningproject.message.entity.MessageType;
-import com.event.msalearningproject.message.service.MessageSender;
+import com.event.msalearningproject.message.service.sender.MessageSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,11 +13,6 @@ import org.springframework.stereotype.Component;
 public class WebClientTestMessageService implements MessageSender {
 
     private final CommonWebClientService webClientService;
-
-    @Override
-    public boolean suport(MessageType messageType) {
-        return false;
-    }
 
     @Override
     public void sendMessage(MessageRequestDto dto) {

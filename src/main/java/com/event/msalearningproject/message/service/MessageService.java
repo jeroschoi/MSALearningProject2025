@@ -1,9 +1,9 @@
 package com.event.msalearningproject.message.service;
 
 import com.event.msalearningproject.message.dto.MessageRequestDto;
-import com.event.msalearningproject.message.entity.MessageHistory;
+import com.event.msalearningproject.message.repository.MessageRepository;
+import com.event.msalearningproject.message.repository.entity.MessageHistory;
 import com.event.msalearningproject.message.mapper.MessageMapper;
-import com.event.msalearningproject.message.repository.MessageRespository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class MessageService {
 
-    private final MessageRespository repository;
+    private final MessageRepository repository;
 
 
     /**
@@ -72,7 +72,7 @@ public class MessageService {
      * @param memberId 회원 ID
      */
     @Transactional
-    public int visableFalseMessageHistory(String memberId) {
+    public int visibleFalseMessageHistory(String memberId) {
         List<MessageHistory> result = repository.findByMemberIdAndVisibleTrueOrderBySentAtDesc(memberId);
         result.forEach(messageHistory -> {
             messageHistory.setVisible(false);

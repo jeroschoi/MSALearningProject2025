@@ -2,7 +2,7 @@ package com.event.msalearningproject.message.controller;
 
 import com.event.msalearningproject.message.dto.GlobalReponseDto;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
-import com.event.msalearningproject.message.entity.MessageHistory;
+import com.event.msalearningproject.message.repository.entity.MessageHistory;
 import com.event.msalearningproject.message.service.MessageSendService;
 import com.event.msalearningproject.message.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -114,9 +114,9 @@ public class MessageController {
     @PutMapping("/{memberId}")
     @Operation(summary = "Update Message History", description = "회원 ID 로 메시지 이력 비활성화")
     public ResponseEntity<GlobalReponseDto> updateMessageHistory(@PathVariable String memberId) {
-        int updateSize = service.visableFalseMessageHistory(memberId);
+        int updateSize = service.visibleFalseMessageHistory(memberId);
         GlobalReponseDto responseDto = new GlobalReponseDto();
-        responseDto.setData(new HashMap<String, Integer>() {{;
+        responseDto.setData(new HashMap<String, Integer>() {{
             put("updateSize", updateSize);
         }});
         return ResponseEntity.ok().body(responseDto);

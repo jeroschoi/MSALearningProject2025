@@ -1,6 +1,5 @@
 package com.event.msalearningproject.message.dto;
 
-import com.event.msalearningproject.message.entity.MessageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +29,7 @@ public class MessageRequestDto {
     @Size(min = 1, max = 300, message = "메시지 내용은 1자 이상 300자 이하로 입력해주세요.")
     private String content;
 
-    @Schema(description = "메시지 타입 (PUSH, KAKAO, SMS, EMAIL)", example = "SMS")
+    @Schema(description = "메시지 타입 (PUSH, KAKAO, SMS, EMAIL) - default는 PUSH", example = "SMS")
     @NotNull(message = "메시지 타입은 필수입니다.")
     private MessageType messageType;
 

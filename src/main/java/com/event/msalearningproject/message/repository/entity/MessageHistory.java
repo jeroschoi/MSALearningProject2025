@@ -1,5 +1,6 @@
-package com.event.msalearningproject.message.entity;
+package com.event.msalearningproject.message.repository.entity;
 
+import com.event.msalearningproject.message.dto.MessageType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

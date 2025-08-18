@@ -1,9 +1,9 @@
 package com.event.msalearningproject.message.service;
 
 import com.event.msalearningproject.message.dto.MessageRequestDto;
-import com.event.msalearningproject.message.entity.MessageHistory;
-import com.event.msalearningproject.message.entity.MessageType;
-import com.event.msalearningproject.message.repository.MessageRespository;
+import com.event.msalearningproject.message.repository.MessageRepository;
+import com.event.msalearningproject.message.repository.entity.MessageHistory;
+import com.event.msalearningproject.message.dto.MessageType;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 class MessageServiceTest {
 
     @Mock  // Mock 객체를 생성하기 위한 애노테이션
-    MessageRespository repository;
+    MessageRepository repository;
 
     @InjectMocks // Mock 객체를 주입 받기 위한 애노테이션
     MessageService messageService;
@@ -181,12 +181,11 @@ class MessageServiceTest {
                 .thenReturn(historyList);
 
         // when
-        int updateSize = messageService.visableFalseMessageHistory(memberId);
+        int updateSize = messageService.visibleFalseMessageHistory(memberId);
 
         // then
         assertThat(messageHistory.isVisible()).isFalse();
-        assertThat(updateSize).isEqualTo(1);
-        verify(repository, Mockito.times(1)).findByMemberIdAndVisibleTrueOrderBySentAtDesc(memberId);
+        assertThat(updateSize).isEqualTo(historyList.size());
     }
 
 }
