@@ -1,7 +1,7 @@
 package com.event.msalearningproject.message.service;
 
+import com.event.msalearningproject.message.dto.MessageHistoryDto;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
-import com.event.msalearningproject.message.repository.entity.MessageHistory;
 import com.event.msalearningproject.message.dto.MessageType;
 import com.event.msalearningproject.message.service.sender.MessageSender;
 import org.junit.jupiter.api.DisplayName;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationContext;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -39,18 +37,15 @@ class MessageSendServiceTest {
                 .phoneNumber("010-1234-5678")
                 .build();
 
-        MessageHistory history = MessageHistory.builder()
-                .id(1L)
+        MessageHistoryDto historyDto = MessageHistoryDto.builder()
                 .memberId(dto.getMemberId())
                 .phoneNumber(dto.getPhoneNumber())
                 .messageType(dto.getMessageType())
                 .content(dto.getContent())
-                .sentAt(LocalDateTime.now())
-                .visible(true)
                 .build();
 
         when(applicationContext.getBean(dto.getMessageType().getMessageSender())).thenReturn(messageSender);
-        when(messageService.saveMessageHistory(dto)).thenReturn(history);
+        when(messageService.saveMessageHistory(dto)).thenReturn(historyDto);
         doNothing().when(messageSender).sendMessage(dto);
 
         MessageSenderFactory factory = new MessageSenderFactory(applicationContext);

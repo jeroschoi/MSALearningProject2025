@@ -1,9 +1,10 @@
 package com.event.msalearningproject.message.controller;
 
 import com.event.msalearningproject.common.dto.CommonResponse;
+import com.event.msalearningproject.message.dto.MessageHistoryDto;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
+import com.event.msalearningproject.message.dto.MessageResponseDto;
 import com.event.msalearningproject.message.dto.MultiMessageResponse;
-import com.event.msalearningproject.message.repository.entity.MessageHistory;
 import com.event.msalearningproject.message.service.MessageSendService;
 import com.event.msalearningproject.message.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -26,7 +24,6 @@ import java.util.Map;
 public class MessageController {
 
     private final MessageService service;
-
     private final MessageSendService messageSendService;
 
 
@@ -56,39 +53,40 @@ public class MessageController {
 
     @PostMapping
     @Operation(summary = "Create Message History", description = "메시지 이력 생성")
-    public ResponseEntity<GlobalReponseDto> createMessageHistory(@RequestBody @Valid MessageRequestDto dto) {
-        MessageHistory messageHistory = service.saveMessageHistory(dto);
-        GlobalReponseDto responseDto = new GlobalReponseDto();
-        responseDto.setData(messageHistory);
-        return ResponseEntity.ok().body(responseDto);
+    public ResponseEntity<CommonResponse<MessageResponseDto>> createMessageHistory(@RequestBody @Valid MessageRequestDto dto) {
+        service.saveMessageHistory(dto);
+        return ResponseEntity.ok().body(CommonResponse.<MessageResponseDto>builder()
+                .data(MessageResponseDto.builder().build())
+                .message("이력생성에 성공하였습니다.")
+                .build()
+        );
     }
 
     @GetMapping("/{memberId}")
     @Operation(summary = "Get Message History", description = "회원 ID 로 메시지 이력 조회")
-    public ResponseEntity<GlobalReponseDto> getMessagetHitsroyMemberId(@PathVariable String memberId) {
-        List<MessageHistory> messageHistoryList = service.getMessageMemberId(memberId);
-        GlobalReponseDto responseDto = new GlobalReponseDto();
-        responseDto.setData(messageHistoryList);
-        return ResponseEntity.ok().body(responseDto);
+    public ResponseEntity<CommonResponse<List<MessageHistoryDto>>> getMessageHistoryMemberId(@PathVariable String memberId) {
+        return ResponseEntity.ok().body(
+                CommonResponse.<List<MessageHistoryDto>>builder()
+                        .data(service.getMessageMemberId(memberId))
+                        .build()
+        );
     }
 
     @GetMapping("/phone/{phoneNumber}")
     @Operation(summary = "Get Message History by Phone Number", description = "휴대폰 번호로 메시지 이력 조회")
-    public ResponseEntity<GlobalReponseDto> getMessageHistoryPhoneNumber(@PathVariable String phoneNumber) {
-        List<MessageHistory> messageHistoryList = service.getMessagePhoneNumber(phoneNumber);
-        GlobalReponseDto responseDto = new GlobalReponseDto();
-        responseDto.setData(messageHistoryList);
-        return ResponseEntity.ok().body(responseDto);
+    public ResponseEntity<CommonResponse<List<MessageHistoryDto>>> getMessageHistoryPhoneNumber(@PathVariable String phoneNumber) {
+        return ResponseEntity.ok().body(
+                CommonResponse.<List<MessageHistoryDto>>builder()
+                        .data(service.getMessagePhoneNumber(phoneNumber))
+                        .build()
+        );
     }
 
     @PutMapping("/{memberId}")
     @Operation(summary = "Update Message History", description = "회원 ID 로 메시지 이력 비활성화")
-    public ResponseEntity<GlobalReponseDto> updateMessageHistory(@PathVariable String memberId) {
-        int updateSize = service.visibleFalseMessageHistory(memberId);
-        GlobalReponseDto responseDto = new GlobalReponseDto();
-        responseDto.setData(new HashMap<String, Integer>() {{
-            put("updateSize", updateSize);
-        }});
-        return ResponseEntity.ok().body(responseDto);
+    public ResponseEntity<CommonResponse<Boolean>> updateMessageHistory(@PathVariable String memberId) {
+        return ResponseEntity.ok().body(CommonResponse.<Boolean>builder()
+                .data(service.visibleFalseMessageHistory(memberId))
+                .build());
     }
 }

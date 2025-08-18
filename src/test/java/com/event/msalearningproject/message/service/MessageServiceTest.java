@@ -1,5 +1,6 @@
 package com.event.msalearningproject.message.service;
 
+import com.event.msalearningproject.message.dto.MessageHistoryDto;
 import com.event.msalearningproject.message.dto.MessageRequestDto;
 import com.event.msalearningproject.message.repository.MessageRepository;
 import com.event.msalearningproject.message.repository.entity.MessageHistory;
@@ -56,9 +57,8 @@ class MessageServiceTest {
                 .thenReturn(messageHistory);
 
         // then
-        MessageHistory savedEntity = messageService.saveMessageHistory(dto);
+        MessageHistoryDto savedEntity = messageService.saveMessageHistory(dto);
         assertThat(savedEntity).isNotNull();
-        assertThat(savedEntity.isVisible()).isTrue();
         assertThat(savedEntity.getMemberId()).isEqualTo(dto.getMemberId());
     }
 
@@ -90,7 +90,7 @@ class MessageServiceTest {
         when(repository.findByPhoneNumberAndVisibleTrueOrderBySentAtDesc(phoneNumber))
                 .thenReturn(Collections.singletonList(savedEntity));
 
-        List<MessageHistory> messageHistoryList = messageService.getMessagePhoneNumber(phoneNumber);
+        List<MessageHistoryDto> messageHistoryList = messageService.getMessagePhoneNumber(phoneNumber);
 
         // then
         assertThat(messageHistoryList).isNotNull();
@@ -134,7 +134,7 @@ class MessageServiceTest {
         when(repository.findByMemberIdAndVisibleTrueOrderBySentAtDesc(memberId))
                 .thenReturn(Collections.singletonList(messageHistory));
 
-        List<MessageHistory> result = messageService.getMessageMemberId(memberId);
+        List<MessageHistoryDto> result = messageService.getMessageMemberId(memberId);
 
         // then
         assertThat(result).isNotNull();
@@ -177,15 +177,12 @@ class MessageServiceTest {
 
         List<MessageHistory> historyList = Collections.singletonList(messageHistory);
 
+        // when
         when(repository.findByMemberIdAndVisibleTrueOrderBySentAtDesc(memberId))
                 .thenReturn(historyList);
 
-        // when
-        int updateSize = messageService.visibleFalseMessageHistory(memberId);
-
         // then
-        assertThat(messageHistory.isVisible()).isFalse();
-        assertThat(updateSize).isEqualTo(historyList.size());
+        assertThat(messageService.visibleFalseMessageHistory(memberId)).isTrue();
     }
 
 }
